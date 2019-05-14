@@ -14,7 +14,7 @@ DROP TABLE Categories CASCADE CONSTRAINTS;
 /
 CREATE TABLE Clients (
 	id INT NOT NULL PRIMARY KEY,
-	username VARCHAR2(30) NOT NULL,
+	username VARCHAR2(50) NOT NULL,
 	password VARCHAR2(40) NOT NULL, 
 	email VARCHAR2(50) NOT NULL ,
 	payment_method VARCHAR2(25),
@@ -133,22 +133,30 @@ DECLARE
   v_index2 INT;
   v_dec INT :=0;
   v_games_count INT;
-  v_users_count INT := 50000;
+  v_users_count INT := 100000;
   v_library_games_count INT;
   v_library_count INT;
   v_gameid INT;
   v_category_count INT;
   v_id_cat INT;
+  v_ti INT;
 BEGIN
 	FOR v_index IN 1..v_users_count LOOP
 		v_nume :=nume (TRUNC(DBMS_RANDOM.VALUE(0,nume.COUNT))+1);
 		v_prenume :=prenume(TRUNC(DBMS_RANDOM.VALUE(0,prenume.COUNT))+1);
-		v_username :=v_prenume||'_'||v_nume||(TRUNC(DBMS_RANDOM.VALUE(1,99)));
-		v_password :=(TRUNC(DBMS_RANDOM.VALUE(5,100)))||(CHR(TRUNC(DBMS_RANDOM.VALUE(33,126))))||(TRUNC(DBMS_RANDOM.VALUE(5,100)))||(CHR(TRUNC(DBMS_RANDOM.VALUE(33,126))));
+		v_ti := (TRUNC(DBMS_RANDOM.VALUE(1,2)));
+    IF (v_ti = 1)
+    then v_username :=v_prenume||'_'||'1'||(TRUNC(DBMS_RANDOM.VALUE(1,500)))||v_nume||(TRUNC(DBMS_RANDOM.VALUE(1,500)))||(TRUNC(DBMS_RANDOM.VALUE(1,500)));
+		else v_username :=v_nume||'_'||'2'||(TRUNC(DBMS_RANDOM.VALUE(1,500)))||v_prenume||(TRUNC(DBMS_RANDOM.VALUE(1,500)))||(TRUNC(DBMS_RANDOM.VALUE(1,500)));
+    end if;
+    v_password :=(TRUNC(DBMS_RANDOM.VALUE(5,100)))||(CHR(TRUNC(DBMS_RANDOM.VALUE(33,126))))||(TRUNC(DBMS_RANDOM.VALUE(5,100)))||(CHR(TRUNC(DBMS_RANDOM.VALUE(33,126))));
 		v_paymethod :=paymentMethod(TRUNC(DBMS_RANDOM.VALUE(0,paymentMethod.COUNT))+1);
 		v_wallet :=DBMS_RANDOM.VALUE(0,1000);
-		insert into Clients values(v_index,v_username,v_password,v_nume||'_'||v_prenume||'@gmail.com',v_paymethod,v_wallet);
-		v_nume:='';
+		if (v_ti = 2) 
+    then insert into Clients values(v_index,v_username,v_password,v_nume||(TRUNC(DBMS_RANDOM.VALUE(1,20)))||'_1'||(TRUNC(DBMS_RANDOM.VALUE(1,50)))||v_prenume||(TRUNC(DBMS_RANDOM.VALUE(1,2000)))||'@gmail.com',v_paymethod,v_wallet);
+		else insert into Clients values(v_index,v_username,v_password,v_prenume||(TRUNC(DBMS_RANDOM.VALUE(1,20)))||'_2'||(TRUNC(DBMS_RANDOM.VALUE(1,50)))||v_nume||(TRUNC(DBMS_RANDOM.VALUE(1,2000)))||'@yahoo.com',v_paymethod,v_wallet);
+		end if;
+    v_nume:='';
 		v_prenume:='';
 		v_username:='';
 		v_password:='';
@@ -234,3 +242,10 @@ select count(*) from libraryes;
 select count(*) from categories;
 select count(*) from reviews;
 /
+
+select *
+from clients c1
+where exists
+(
+  select id from clients c2 where c1.id!=c2.id and c1.email=c2.email
+);/
