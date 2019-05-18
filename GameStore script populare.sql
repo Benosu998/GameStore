@@ -14,9 +14,9 @@ DROP TABLE Categories CASCADE CONSTRAINTS;
 /
 CREATE TABLE Clients (
 	id INT NOT NULL PRIMARY KEY,
-	username VARCHAR2(50) NOT NULL,
+	username VARCHAR2(50) NOT NULL unique,
 	password VARCHAR2(40) NOT NULL, 
-	email VARCHAR2(50) NOT NULL ,
+	email VARCHAR2(50) NOT NULL unique,
 	payment_method VARCHAR2(25),
 	wallet FLOAT)
 /
@@ -66,7 +66,13 @@ CREATE TABLE Game_discount (
 	end_discount DATE,
 	CONSTRAINT fk_dis_game_id FOREIGN KEY (game_id) REFERENCES Games(id))
 /
+create index i_user
+on clients (username);
+/
 
+create index i_mail
+on clients (email);
+/
 DECLARE 
 	TYPE sirStringuri IS VARRAY(5000) OF varchar2(255);
   nume sirStringuri := sirStringuri('Albu','Alexa','Anton','Andronic','Ardeleanu','Asachi','Avramescu','Baciu','Badea','Baicu',
@@ -140,6 +146,7 @@ DECLARE
   v_category_count INT;
   v_id_cat INT;
   v_ti INT;
+  V_mail VARCHAR2(50);
 BEGIN
 	FOR v_index IN 1..v_users_count LOOP
 		v_nume :=nume (TRUNC(DBMS_RANDOM.VALUE(0,nume.COUNT))+1);
@@ -153,8 +160,16 @@ BEGIN
 		v_paymethod :=paymentMethod(TRUNC(DBMS_RANDOM.VALUE(0,paymentMethod.COUNT))+1);
 		v_wallet :=DBMS_RANDOM.VALUE(0,1000);
 		if (v_ti = 2) 
-    then insert into Clients values(v_index,v_username,v_password,v_nume||(TRUNC(DBMS_RANDOM.VALUE(1,20)))||'_1'||(TRUNC(DBMS_RANDOM.VALUE(1,50)))||v_prenume||(TRUNC(DBMS_RANDOM.VALUE(1,2000)))||'@gmail.com',v_paymethod,v_wallet);
-		else insert into Clients values(v_index,v_username,v_password,v_prenume||(TRUNC(DBMS_RANDOM.VALUE(1,20)))||'_2'||(TRUNC(DBMS_RANDOM.VALUE(1,50)))||v_nume||(TRUNC(DBMS_RANDOM.VALUE(1,2000)))||'@yahoo.com',v_paymethod,v_wallet);
+    then
+      V_mail := v_nume||(TRUNC(DBMS_RANDOM.VALUE(1,20)))||'_1'||(TRUNC(DBMS_RANDOM.VALUE(1,50)))||v_prenume||(TRUNC(DBMS_RANDOM.VALUE(1,2000)))||'@gmail.com';
+      insert into Clients (id,username,password,email,payment_method,wallet)
+      select v_index,v_username,v_password,V_mail,v_paymethod,v_wallet from dual 
+      where not exists (select 1 from clients where username=v_username or email=V_mail);
+		else
+      V_mail := v_prenume||(TRUNC(DBMS_RANDOM.VALUE(1,20)))||'_2'||(TRUNC(DBMS_RANDOM.VALUE(1,50)))||v_nume||(TRUNC(DBMS_RANDOM.VALUE(1,2000)))||'@yahoo.com';
+      insert into Clients 
+      select v_index,v_username,v_password,V_mail,v_paymethod,v_wallet from dual
+      where not exists (select 1 from clients where username=v_username or email=V_mail);
 		end if;
     v_nume:='';
 		v_prenume:='';
@@ -163,7 +178,7 @@ BEGIN
 		v_paymethod:='';
 		v_wallet:='';
 	END LOOP;
-  
+  dbms_output.put_line('Insert in clients Done !');
   
 	FOR v_index IN 1..games.COUNT LOOP
 		v_nume:=Games(v_index);
@@ -196,6 +211,7 @@ BEGIN
 			insert into Game_discount values(v_index_gd,v_index+v_dec,v_percent,v_fDate,v_lDate);
 		END IF;
 	END LOOP;
+  dbms_output.put_line('Insert in games,sequel,discount Done !');
   v_library_count :=0;
   select count(*) into v_games_count from games;
   v_visiting.extend(v_games_count);
@@ -208,11 +224,14 @@ BEGIN
       v_gameid := DBMS_RANDOM.VALUE(1,v_games_count);
       IF(v_visiting(v_gameid) < 1) THEN 
           v_library_count := v_library_count + 1;
-          insert into libraryes values(v_library_count,v_index,v_gameid);
+          insert into libraryes 
+          select v_library_count,v_index,v_gameid from dual
+          where exists (select 1 from clients where id=v_index);
           v_visiting(v_gameid) := 1;
       END IF;
     END LOOP;
   END LOOP;
+  dbms_output.put_line('Insert in library Done !');
   v_id_cat:=0;
   FOR v_index IN 1..categorii.COUNT LOOP
     v_category_count := DBMS_RANDOM.VALUE(1,10);
@@ -224,28 +243,26 @@ BEGIN
     END LOOP;
   END LOOP;
   
+  dbms_output.put_line('Insert in category Done !');
   
   FOR v_index IN 1..10000 LOOP
     v_gameid := DBMS_RANDOM.VALUE(1,v_games_count);
     v_index2 := DBMS_RANDOM.VALUE(1,v_users_count);
     v_id_cat := DBMS_RANDOM.VALUE(1,5);
-    insert into reviews values(v_index,v_gameid,v_index2,v_id_cat,null);
+    insert into reviews 
+    select v_index,v_gameid,v_index2,v_id_cat,null from dual 
+    where exists(select 1 from clients where id=v_index2);
   END LOOP;
+  dbms_output.put_line('Insert in review Done !');
+
 END;
 /
 
-select count(*) from clients;
-select count(*) from games;
-select count(*) from game_sequels;
-select count(*) from game_discount;
-select count(*) from libraryes;
-select count(*) from categories;
-select count(*) from reviews;
+select 'clients',count(*) from clients union
+select 'games',count(*) from games union
+select 'game_sequels',count(*) from game_sequels union
+select 'game_discount',count(*) from game_discount union
+select 'libraryes',count(*) from libraryes union
+select 'categories',count(*) from categories union
+select 'reviews',count(*) from reviews;
 /
-
-select *
-from clients c1
-where exists
-(
-  select id from clients c2 where c1.id!=c2.id and c1.email=c2.email
-);/
