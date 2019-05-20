@@ -2,16 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fbd0b14f-0681-4b3d-a11c-64fd5ccd025d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../Client/src/Client.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/ojdbc8.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/BasicController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Database.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Client/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Client/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Server.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ClientThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ClientThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client/out/production/Client/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Client/out/production/Client/Client.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Client/src/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Client/src/Client.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -67,8 +60,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ClientThread.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
+            <state relative-caret-position="850">
+              <caret line="50" column="9" lean-forward="true" selection-start-line="50" selection-start-column="9" selection-end-line="50" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -176,7 +169,7 @@
     <property name="Repository.Attach.Sources" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1558362554047" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1558363568017" />
     <property name="database.console.LAST_STATE" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../New folder (3)/xdb6.jar!/" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -226,10 +219,11 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4274000" />
+    <option name="totallyTimeSpent" value="4296000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Designer" order="0" />
       <window_info id="UI Designer" order="1" />
@@ -238,7 +232,6 @@
       <window_info id="Image Layers" order="4" />
       <window_info content_ui="combo" id="Project" order="5" visible="true" weight="0.24966443" />
       <window_info id="Structure" order="6" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Database Console" weight="0.3286119" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="1" />
       <window_info anchor="bottom" id="Terminal" order="2" />
@@ -246,12 +239,13 @@
       <window_info anchor="bottom" id="Event Log" order="4" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="5" />
       <window_info anchor="bottom" id="Find" order="6" />
-      <window_info active="true" anchor="bottom" id="Run" order="7" visible="true" weight="0.3286119" />
+      <window_info anchor="bottom" id="Run" order="7" weight="0.3286119" />
       <window_info anchor="bottom" id="Debug" order="8" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
       <window_info anchor="bottom" id="Messages" order="10" />
       <window_info anchor="bottom" id="Inspection" order="11" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="12" />
+      <window_info anchor="bottom" id="Database Console" order="13" weight="0.3286119" />
       <window_info anchor="right" id="Theme Preview" order="0" />
       <window_info anchor="right" id="Database" order="1" weight="0.54362416" />
       <window_info anchor="right" id="Capture Analysis" order="2" />
@@ -312,8 +306,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ClientThread.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
+        <state relative-caret-position="850">
+          <caret line="50" column="9" lean-forward="true" selection-start-line="50" selection-start-column="9" selection-end-line="50" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

@@ -29,7 +29,6 @@ public class Client {
                         new PrintWriter(socket.getOutputStream(), true);
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(socket.getInputStream()))) {
-            System.out.println(request);
             out.println(request);
             String response = in.readLine();
             System.out.println(response);
