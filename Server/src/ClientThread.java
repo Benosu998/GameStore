@@ -41,14 +41,12 @@ public class ClientThread extends Thread {
 
     private String execute(String request) {
         String[] parts = request.split(" ");
-        if(parts[0].equals("find"))
-        {
-            try {
-                return controller.findById(Integer.parseInt(parts[1]));
-            }catch (SQLException e){
-                System.out.println(e);
-            }
+        Boolean response = false;
+        try {
+            response = controller.checkClient(parts[1],parts[2]);
+        }catch (SQLException e){
+            System.out.println(e);
         }
-        return "Request primit " + request;
+        return response.toString();
     }
 }

@@ -1,11 +1,11 @@
 import java.sql.*;
 
 public class BasicController {
-    public String findById(int id) throws SQLException {
+    public Boolean checkClient(String username,String password) throws SQLException {
         Connection con = Database.getConnection();
         try (Statement stmt = con.createStatement();
-             ResultSet rs = stmt.executeQuery("select username from clients where id = '" + id + "'")) {
-            return rs.next() ? rs.getString(1) : null;
+             ResultSet rs = stmt.executeQuery("select '1' from clients where username = '" + username + "' and  password = '" + password + "'")) {
+            return rs.next() ? true : false;
         }
     }
 }
