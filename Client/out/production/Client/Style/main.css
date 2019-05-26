@@ -1,0 +1,8 @@
+#pane,#toolBox{
+    -fx-background-color: grey;
+}
+#gameComents , #gameRecomandations{
+    -fx-border-color: black;
+    -fx-background-color: white;
+    -fx-border-width: 2;
+}

@@ -6,7 +6,6 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 
-
 <Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" stylesheets="@../Style/register.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.RegisterController">
    <children>
       <Label fx:id="errorMessage" layoutX="114.0" layoutY="22.0" prefHeight="43.0" prefWidth="173.0" />
@@ -15,7 +14,7 @@
       <PasswordField fx:id="password2" layoutX="114.0" layoutY="178.0" prefHeight="43.0" prefWidth="173.0" promptText="Retype Password" styleClass="txtField" />
       <TextField fx:id="email" layoutX="114.0" layoutY="231.0" prefHeight="43.0" prefWidth="173.0" promptText="E-Mail" styleClass="txtField" />
       <TextField fx:id="email2" layoutX="114.0" layoutY="283.0" prefHeight="43.0" prefWidth="173.0" promptText="Retype E-Mail" styleClass="txtField" />
-      <Button layoutX="113.0" layoutY="335.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="173.0" text="Register" />
+      <Button layoutX="113.0" layoutY="335.0" mnemonicParsing="false" onAction="#register" prefHeight="43.0" prefWidth="173.0" text="Register" />
       <Button fx:id="alrReg" layoutX="113.0" layoutY="388.0" mnemonicParsing="false" onAction="#login" prefHeight="43.0" prefWidth="173.0" text="Already Registered?" />
    </children>
 </Pane>

@@ -9,6 +9,7 @@ public class ClientThread extends Thread {
     private Socket socket = null;
     private final Server server;
     private BasicController controller = new BasicController();
+
     public ClientThread(Socket socket, Server server) {
         this.socket = socket;
         this.server = server;
@@ -22,7 +23,7 @@ public class ClientThread extends Thread {
             while (running) {
                 String request = in.readLine();
                 String response = null;
-                if(request != null)
+                if (request != null)
                     response = execute(request);
                 out.println(response);
                 out.flush();
@@ -43,10 +44,22 @@ public class ClientThread extends Thread {
         String[] parts = request.split(" ");
         Boolean response = false;
         try {
-            response = controller.checkClient(parts[1],parts[2]);
-        }catch (SQLException e){
+            switch (parts[0]) {
+                case "login":
+                    response = controller.checkClient(parts[1], parts[2]);
+                    break;
+                case "register":
+                    response = controller.register(parts[1],parts[2],parts[3]);
+                    break;
+                default:
+                    response = false;
+                    System.out.println("Comanda indisponibila.");
+                    break;
+
+            }
+        } catch (SQLException e) {
             System.out.println(e);
-        }catch (ArrayIndexOutOfBoundsException e){
+        } catch (ArrayIndexOutOfBoundsException e) {
             return response.toString();
         }
         return response.toString();
