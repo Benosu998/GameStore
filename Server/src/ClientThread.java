@@ -46,6 +46,8 @@ public class ClientThread extends Thread {
             response = controller.checkClient(parts[1],parts[2]);
         }catch (SQLException e){
             System.out.println(e);
+        }catch (ArrayIndexOutOfBoundsException e){
+            return response.toString();
         }
         return response.toString();
     }

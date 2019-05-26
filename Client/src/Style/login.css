@@ -1,0 +1,22 @@
+#pane {
+    -fx-background-color: grey;
+}
+
+#username ,#password{
+    -fx-background-color: black;
+    -fx-text-fill: white;
+}
+
+#buttonLogin{
+    -fx-border-radius: 5;
+}
+#errorMessage{
+    -fx-font-size: 13px;
+    -fx-alignment: center;
+}
+
+#register{
+    -fx-background-color: grey;
+}
+#register:hover{
+}
