@@ -42,6 +42,7 @@ public class ClientThread extends Thread {
 
     private String execute(String request) {
         String[] parts = request.split(" ");
+        System.out.println(request);
         Boolean response = false;
         try {
             switch (parts[0]) {
@@ -49,16 +50,57 @@ public class ClientThread extends Thread {
                     response = controller.checkClient(parts[1], parts[2]);
                     break;
                 case "register":
-                    response = controller.register(parts[1],parts[2],parts[3]);
+                    response = controller.register(parts[1], parts[2], parts[3]);
                     break;
+                case "addFunds":
+                    response = controller.addFunds(Integer.parseInt(parts[1]), parts[2], parts[3]);
+                    break;
+                case "funds":
+                    return controller.getFunds(parts[1]);
+                case "lib_games":
+                    return controller.getGames(parts[1]);
+                case "game_name":
+                    return controller.getGameName(Integer.parseInt(parts[1]));
+                case "game_comments":
+                    return controller.getGameComments(Integer.parseInt(parts[1]));
+                case "gamesByName":
+                    String name = parts[1];
+                    for(int i=2;i<parts.length;i++)
+                    {
+                        name = name + ' ' + parts[i];
+                    }
+                    return controller.getGamesByName(name);
+                case "categories":
+                    return controller.getCategories();
+                case "gamesByCategory":
+                    return controller.getGamesByCategory(parts[1]);
+                case "gamesFranchises":
+                    return controller.getGameFranchises();
+                case "highRated":
+                    return controller.getHighRated();
+                case "showHistory":
+                    return controller.showHistory(parts[1]);
+                case "getMost":
+                    return controller.getMost();
+                case "getSales":
+                    return controller.getSales();
+                case "getPrice":
+                    name = parts[1];
+                    for(int i=2;i<parts.length;i++)
+                    {
+                        name = name + ' ' + parts[i];
+                    }
+                    System.out.println(name);
+                    return controller.getPrice(name);
                 default:
                     response = false;
-                    System.out.println("Comanda indisponibila.");
+                    System.out.println("Comanda indisponibila." + parts[0]);
                     break;
 
             }
         } catch (SQLException e) {
             System.out.println(e);
+           return response.toString();
         } catch (ArrayIndexOutOfBoundsException e) {
             return response.toString();
         }

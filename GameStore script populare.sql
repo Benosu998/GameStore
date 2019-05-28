@@ -12,6 +12,8 @@ DROP TABLE Game_discount CASCADE CONSTRAINTS;
 /
 DROP TABLE Categories CASCADE CONSTRAINTS;
 /
+DROP TABLE History CASCADE CONSTRAINTS;
+/
 CREATE TABLE Clients (
 	id INT NOT NULL PRIMARY KEY,
 	username VARCHAR2(50) NOT NULL unique,
@@ -33,7 +35,8 @@ CREATE TABLE Libraryes (
 	user_id INT NOT NULL,
 	game_id INT NOT NULL,
 	CONSTRAINT fk_Libraryes_user_id FOREIGN KEY (user_id) REFERENCES Clients(id),
-	CONSTRAINT fk_Libraryes_game_id FOREIGN KEY (game_id) REFERENCES Games(id))
+	CONSTRAINT fk_Libraryes_game_id FOREIGN KEY (game_id) REFERENCES Games(id),
+  CONSTRAINT unique_key UNIQUE (user_id,game_id))
 /
 
 CREATE TABLE Categories (
@@ -66,13 +69,38 @@ CREATE TABLE Game_discount (
 	end_discount DATE,
 	CONSTRAINT fk_dis_game_id FOREIGN KEY (game_id) REFERENCES Games(id))
 /
+CREATE TABLE history (
+  user_id INT NOT NULL,
+  game_id INT NOT NULL,
+  action_date DATE,
+  CONSTRAINT fk_user_id_history foreign key (user_id) references clients(id),
+  CONSTRAINT fk_game_id_history foreign key (game_id) references games(id)
+)
+/
+
+CREATE OR REPLACE TRIGGER HistoryChange
+before update or INSERT
+ON libraryes
+FOR EACH ROW 
+
+DECLARE
+  v_id_game int;
+  v_id_user int;
+BEGIN 
+
+  INSERT INTO history VALUES 
+  (:new.user_id,:new.game_id, sysdate); 
+
+END;
+/
+
 create index i_user
 on clients (username);
 /
-
 create index i_mail
 on clients (email);
 /
+
 DECLARE 
 	TYPE sirStringuri IS VARRAY(5000) OF varchar2(255);
   nume sirStringuri := sirStringuri('Albu','Alexa','Anton','Andronic','Ardeleanu','Asachi','Avramescu','Baciu','Badea','Baicu',
@@ -86,7 +114,7 @@ DECLARE
 			'Cami','Ecaterina','Costel','Valeriu','Ovidiu','Adrian','Mirela','Gabriela','Daniel','Emima','Sandu','Flavius',
 			'Elisabeta','Denisa','Tatiana','Horatiu','Oana','Ivan','Violeta','Victoria','Valerica','Magda','Delia');
 	games 	sirStringuri :=sirStringuri('Minecraft','Doom','Assasins Creen Odyssey','Borderlands','Fortnite','Spore','PlayerUnknown BattleGrounds','Darksiders',
-			'Grand Theft Auto','The Elder Scrolls','Fallout','The Witcher','Borderlands','Ark: Survival Evolved','Fallout',
+			'Grand Theft Auto','The Elder Scrolls','Fallout','The Witcher','Ark: Survival Evolved',
 			'Call of Duty','Diablo','World of Warcraft','Batman','Darksiders','Cities:Skylines',
 			'Sea of Thieves','Final Fantasy','Dead Island','Warframe','Star Wars','Overwatch','Forza Horizon',
 			'Apex Legends','De Blob','Anthem','The Walking Dead','Metal Gear Solid','Rocket League','Gears of War','Tom Clancys The Division');
@@ -171,6 +199,7 @@ BEGIN
       select v_index,v_username,v_password,V_mail,v_paymethod,v_wallet from dual
       where not exists (select 1 from clients where username=v_username or email=V_mail);
 		end if;
+    
     v_nume:='';
 		v_prenume:='';
 		v_username:='';
@@ -178,6 +207,8 @@ BEGIN
 		v_paymethod:='';
 		v_wallet:='';
 	END LOOP;
+  v_users_count := v_users_count +1;
+  insert into Clients values (v_users_count,'beni','beni','beni@gmail.com','paypal',850);
   dbms_output.put_line('Insert in clients Done !');
   
 	FOR v_index IN 1..games.COUNT LOOP
@@ -216,7 +247,7 @@ BEGIN
   select count(*) into v_games_count from games;
   v_visiting.extend(v_games_count);
   FOR v_index IN 1..v_users_count LOOP
-    v_library_games_count := DBMS_RANDOM.VALUE(0,50);
+    v_library_games_count := DBMS_RANDOM.VALUE(5,17);
     FOR v_index2 IN 1..v_games_count LOOP
       v_visiting(v_index2) := 0;
     END LOOP;
@@ -234,7 +265,7 @@ BEGIN
   dbms_output.put_line('Insert in library Done !');
   v_id_cat:=0;
   FOR v_index IN 1..categorii.COUNT LOOP
-    v_category_count := DBMS_RANDOM.VALUE(1,10);
+    v_category_count := ceil(DBMS_RANDOM.VALUE(0,10));
     FOR v_index2 IN 1..v_category_count LOOP
       v_id_cat:=v_id_cat + 1;
       v_gameid :=DBMS_RANDOM.VALUE(1,v_games_count);
@@ -264,5 +295,6 @@ select 'game_sequels',count(*) from game_sequels union
 select 'game_discount',count(*) from game_discount union
 select 'libraryes',count(*) from libraryes union
 select 'categories',count(*) from categories union
-select 'reviews',count(*) from reviews;
+select 'reviews',count(*) from reviews union
+select 'history',count(*) from history;
 /

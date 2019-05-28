@@ -6,7 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -26,14 +25,12 @@ public class LoginController {
     public void login(ActionEvent e) throws Exception {
         if (username.getText().equals("") || password.getText().equals("")) {
             errorMessage.setText("Complete Each Row !");
-        } else if (!ServerController.sendRequestToServer("find " + username.getText() + " " + password.getText()).equals("true")) {
+        } else if (ServerController.sendRequestToServer("login " + username.getText() + " " + password.getText()).equals("true")) {
             Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/library.fxml"));
             Parent root = loader.load();
-            MainController myController = loader.getController();
-            myController.funds.setText("Funds:" + "200$");
-            myController.username.setText("User :" +username.getText());
-            myController.games.getItems().add(new Button("Minecraft"));
+            libraryController myController = loader.getController();
+            myController.initializareLibrary(username.getText());
             Scene scene =new Scene(root);
             stage.setScene(scene);
 
